@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "EditProfile";
+}
+
+<link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+<link href="~/font-awesome/css/all.css" rel="stylesheet" />
+<link href="~/font-awesome/css/all.min.css" rel="stylesheet" />
+
+@model WebApplicationProject.ViewModel.EditProfileViewModel
+<div class="profile-container">
+    <div class="profile-content">
+
+        <div class="profile-detail ">
+            <div class="edit-img-container">
+                <img src="~/images/pon.jpg" />
+                
+                
+            </div>
+            <div class="flex-col w-100">
+                <div class="username-in-edit-profile flex justify-between align-item-center">
+                    <h2 class="">Ponza</h2>
+
+                    <button class="pad-b-5">
+                        <a asp-controller="User" asp-action="Index">Profile<i class="fa-solid fa-user pad"></i></a>
+                        
+                        
+                    </button>
+
+
+                </div>
+
+
+                <form method="post" asp-action="Edit" class="border-b pad-b-15">
+                    <div class="flex  w-100">
+                        <div class="flex flex-col justify-between pad-t-15 pad-r-15">
+                            <div class="detail-input">
+                                <h2>First name</h2>
+                                <input asp-for="FirstName" placeholder="@Model.FirstName" maxlength="25"/>
+                            </div>
+                            <div class="detail-input">
+                                <h2>Tel</h2>
+                                <input asp-for="PhoneNumber" placeholder="@Model.PhoneNumber" maxlength="25" />
+                            </div>
+
+                        </div>
+                        <div class="flex flex-col pad-t-15 justify-between">
+                            <div class="detail-input ">
+                                <h2>Last name</h2>
+
+                                <input asp-for="LastName" placeholder="@Model.LastName" maxlength="50" />
+                            </div>
+                            <div class=" detail-input">
+                                <h2>Email</h2>
+
+                                <input asp-for="Email" placeholder="@Model.Email" maxlength="50" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="detail-submit">Submit</button>
+                </form>
+                <div method="post" asp-action="ChangePassword">
+                    
+                    <button  class="password-submit">
+                        <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
+                            Change Password
+                        </a>
+                        </button>
+                </div>
+
+
+
+            </div>
+        </div>
+        
+
+
+    </div>
+</div>
+
+
+<script>
+   
+    document.getElementById('editImg').addEventListener('click', function () {
+        var imgInput = document.getElementById('imgInput');
+
+        if (imgInput.style.display === 'block' || imgInput.style.display === '') {
+            imgInput.style.display = 'none';
+        } else {
+            imgInput.style.display = 'block';
+        }
+    });
+</script>

@@ -1,0 +1,103 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model WebApplicationProject.ViewModel.CreateEventViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<link rel="stylesheet" href="~/css/Create.css" asp-append-version="true" />
+
+<form asp-action="Create" method="post">
+<div class="almarai-bold wrapper">
+    <a asp-action ="Index" asp-controller="Event" class="back-page">
+        <i class="fa-solid fa-chevron-left fa-2xl"></i>
+    </a>
+    <h1>Create Your Event</h1>
+    <div class="text-container">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" type="text" class="text-box" required>
+        <label class="custom-select" asp-for="Category">
+            Category
+            <select asp-for="Category" required>
+                <option value="Aerobic">Aerobic</option>
+                <option value="Badminton">Badminton</option>
+                <option value="Basketball">Basketball</option>
+                <option value="Bicycle">Bicycle</option>
+                <option value="Football">Football</option>
+                <option value="Futsal">Futsal</option>
+                <option value="Skateboard">Skateboard</option>
+                <option value="Swimming">Swimming</option>
+                <option value="Volleyball">Volleyball</option>
+                <option value="Other">Other</option>
+            </select>
+            
+        </label>
+        <div class="time-container">
+            <label class="label-time" asp-for="ActivityTime">Activity Time</label>
+            <input type="datetime-local" id="ActivityTime"class="time-box" asp-for="ActivityTime" required />
+        </div>
+        <div class="time-container">
+            <label class="label-time" asp-for="ExpireTime">Expire Time</label><link href="~/css/mainevent.css" rel="stylesheet" />
+            <input type="datetime-local" id="ExpiredTime"class="time-box" asp-for="ExpireTime" required />
+        </div>
+        <label asp-for="Location" class="location-label">Location</label>
+        <input type="text" class="text-box" asp-for="Location" required/>
+
+        <label asp-for="Detail">Detail</label>
+        <input type="text" class="text-box" asp-for="Detail" required />
+ 
+        <label asp-for="Contact">Contact</label>
+        <input type="text" class="text-box" asp-for="Contact" required />
+    </div>
+    <div class="almarain-bold footer">
+        <p>Number of Opening</p>
+        <input asp-for="Capacity" class="show-box" id="people-count" value="1"/>
+        <input type="button" class="btn-num" id="btn-down" value="-" />
+        <input type="button" class="btn-num" id="btn-up" value="+" />
+        <button type="submit" id="create-submit" name="submit" value="SUBMIT">SUBMIT</button>
+    </div>
+</div>
+</form>
+<script>
+        //createEvent part
+    const add = document.getElementById("btn-up");
+    const minus = document.getElementById("btn-down");
+    const count = document.getElementById("people-count");
+
+    if (add != null) {
+        add.addEventListener("click", function () {
+        count.value = parseInt(count.value) + 1; // Increment the value of the input field
+        });
+    }
+
+    if (minus != null) {
+        minus.addEventListener("click", function () {
+            const currentValue = parseInt(count.value);
+            if (currentValue > 1) {
+                count.value = currentValue - 1; // Decrement the value of the input field, ensuring it never goes below 1
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var activityTime = document.getElementById("ActivityTime");
+        var expiredTime = document.getElementById("ExpiredTime");
+
+        if (activityTime && expiredTime) {
+            var activityTimeValue = new Date(activityTime.value);
+            var expiredTimeValue = new Date(expiredTime.value);
+            var now = new Date();
+
+            if (activityTimeValue < now) {
+                alert("Invalid Activity time");
+            } else if (expiredTimeValue < now) {
+                alert("Invalid Expired time");
+            }
+        }
+    });
+</script>

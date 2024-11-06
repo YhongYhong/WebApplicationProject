@@ -1,0 +1,75 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Signup";
+    Layout = null;
+
+}
+
+<link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
+<link href="~/font-awesome/css/all.css" rel="stylesheet" />
+<link href="~/font-awesome/css/all.min.css" rel="stylesheet" />
+
+<div class="login-container">
+    <div>
+        <div>
+            <img src="~/images/basketball.png" class="basketball-pic" />
+        </div>
+
+        <button class="back-button">
+            <i class="fa-solid fa-chevron-left fa-2xl"></i>
+            <a asp-controller="Home" asp-action="Index">BACK</a>
+        </button>
+
+    </div>
+    <div class="form-container">
+        <h1>Get Started Now</h1>
+        <p>Create your account, wish you have great time.</p>
+        <div>
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div class="first-row">
+                    <div class="inp-container">
+                        <label asp-for="Input.FirstName">FirstName</label>
+                        <input asp-for="Input.FirstName"  id="fname" maxlength="20">
+                    </div>
+                    <div class="inp-container">
+                        <label asp-for="Input.LastName">LastName</label>
+                        <input asp-for="Input.LastName"  id="lname" maxlength="20">
+                    </div>
+                </div>
+               
+                <div class="sec-row">
+                    <div class="inp-container">
+                        <label asp-for="Input.Email">Email</label>
+                        <input type="text" asp-for="Input.Email" maxlength="50">
+                    </div>
+                    <div class="pad-b">
+                        <div class="inp-container">
+                            <label asp-for="Input.Password">Password</label>
+                            <input type="password"  asp-for="Input.Password" maxlength="20">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="inp-container">
+                            <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                            <input type="password"  asp-for="Input.ConfirmPassword" maxlength="20">
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div>
+                    <button type="submit" class="sub-button">
+                        Sign up
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

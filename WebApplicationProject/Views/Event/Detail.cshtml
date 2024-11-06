@@ -1,0 +1,180 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebApplicationProject.Areas.Identity.Data
+@{
+    ViewData["Title"] = "Eventdetail";
+}
+
+@model WebApplicationProject.Models.Event
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<link rel="stylesheet" href="~/css/Detail.css" asp-append-version="true" />
+<link href="~/font-awesome/css/all.css" rel="stylesheet" />
+<link href="~/font-awesome/css/all.min.css" rel="stylesheet" />
+
+@if (ViewBag.AlertMessage != null)
+{
+    <div id="alertMessage" style="display: none;">
+        @ViewBag.AlertMessage
+    </div>
+}
+
+<div class="modal" id="myModal">
+    <div class="modal-content">
+        <div class="modal-subject pad-b-15">
+            <div class="flex items-center">
+                <h2>
+                    @Model.Title
+                </h2>
+                <i class="fa-solid fa-user"></i>
+                <p id="amount">@Model.Amount/@Model.Capacity</p>
+            </div>
+            <div class="flex items-center">
+
+                @if (Model.ExpireTime > DateTime.Now)
+                {
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        bool userIsMember = false;
+
+
+                        foreach (var ue in Model.UserEvents)
+                        {
+                            if (ue.UserID == UserManager.GetUserId(User))
+                            {
+                                userIsMember = ue.IsJoin; // Check if user is a member
+                                break;
+                            }
+                        }
+
+                        if (Model.UserID == UserManager.GetUserId(User))
+                        {
+                            <a asp-action="Edit" asp-controller="Event" asp-route-Id="@Model.Id">
+                                <button class="edit">
+                                    EDIT
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </a>
+                        }
+
+                        else if (!userIsMember)
+                        {
+                            <div class="join-button">
+                                <form asp-action="Join" method="post">
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <button type="submit">JOIN
+                                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            
+                            <form asp-action="Quit" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                                <button class="quit">
+                                    QUIT
+                                    <i class="fa-regular fa-circle-xmark"></i>
+                                </button>
+                            </form>
+                        }
+                    }
+                    else
+                    {
+                        <form asp-action="Join" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit">
+                                JOIN
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            </button>
+                        </form>
+                    }
+                }
+                else
+                {
+                    <button class="edit">
+                        Event Closed
+                    </button>
+                }
+                <p>Create by @Model.User.UserName</p>
+
+            </div>
+
+
+        </div>
+        <div class="modal-card-detail">
+            <div class="modal-card-detail-container ">
+                
+                    <div class="modal-card-detail-content">
+                        <div class="detail-content pad-b-15">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <p>@Model.ActivityTime</p>
+                        </div>
+                        <div class="detail-content pad-b-15">
+                            <i class="fa-solid fa-house-chimney"></i>
+                            <p>@Model.Location</p>
+                        </div>
+                    </div>
+                    <div class ="modal-card-detail-content">
+                        <div class="detail-content pad-b-15">
+                            <i class="fa-solid fa-clock"></i>
+                            <p>@Model.ExpireTime</p>
+                        </div>
+                        <div class="detail-content pad-b-15 ">
+                            <i class="fa-solid fa-phone"></i>
+                            <p>@Model.Contact</p>
+                        </div>
+                   </div >
+                   
+                   
+               
+                
+            </div>
+
+
+            <div class="pad-b-15 ">
+                <h2> Detail </h2>
+                <p>@Model.Detail</p>
+            </div>
+            <div class="comment pad-b-15">
+                <h2> Comments </h2>
+                <form method="post" asp-controller="Event" asp-action="AddComment">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="eventId" value="@Model.Id" />
+                    <input type="text" class="my-2" name="detail" placeholder="Add your comment here..." />
+                    <button type="submit" class="btn btn-primary"><i class="fa-regular fa-paper-plane"></i></button>
+                </form>
+
+
+            </div>
+            <div>
+                @if (Model.Comments != null && Model.Comments.Any())
+                {
+                    <ul>
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <li>
+                                <div>
+                                    <strong>@comment.User.UserName</strong> - @comment.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")
+                                </div>
+                                <div>
+                                    @comment.Detail
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var alertMessage = document.getElementById('alertMessage');
+        if (alertMessage != null) {
+            alert(alertMessage.innerText);
+        }
+    });
+</script>
